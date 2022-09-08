@@ -71,18 +71,22 @@ func (b ByDistance) Less(i, j int) bool {
 }
 
 // FetchServers retrieves a list of available servers
-func (client *Speedtest) FetchServers(user *User) (Servers, error) {
-	return client.FetchServerListContext(context.Background(), user)
+func (client *Speedtest) FetchServers(user *User, searchText string) (Servers, error) {
+	return client.FetchServerListContext(context.Background(), user, searchText)
 }
 
 // FetchServers retrieves a list of available servers
-func FetchServers(user *User) (Servers, error) {
-	return defaultClient.FetchServers(user)
+func FetchServers(user *User, searchText string) (Servers, error) {
+	return defaultClient.FetchServers(user, searchText)
 }
 
 // FetchServerListContext retrieves a list of available servers, observing the given context.
-func (client *Speedtest) FetchServerListContext(ctx context.Context, user *User) (Servers, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, speedTestServersUrl, nil)
+func (client *Speedtest) FetchServerListContext(ctx context.Context, user *User, searchText string) (Servers, error) {
+	requestUrl := speedTestServersUrl
+	if searchText != "" {
+		requestUrl += "&search=" + searchText
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, requestUrl, nil)
 	if err != nil {
 		return Servers{}, err
 	}
@@ -161,8 +165,8 @@ func (client *Speedtest) FetchServerListContext(ctx context.Context, user *User)
 }
 
 // FetchServerListContext retrieves a list of available servers, observing the given context.
-func FetchServerListContext(ctx context.Context, user *User) (Servers, error) {
-	return defaultClient.FetchServerListContext(ctx, user)
+func FetchServerListContext(ctx context.Context, user *User, searchText string) (Servers, error) {
+	return defaultClient.FetchServerListContext(ctx, user, searchText)
 }
 
 func distance(lat1 float64, lon1 float64, lat2 float64, lon2 float64) float64 {

@@ -116,19 +116,19 @@ go get github.com/showwin/speedtest-go
 ```
 
 ### API Usage
-The code below finds closest available speedtest server and tests the latency, download, and upload speeds.
+The code below finds closest available speedtest server and tests the latency, download, and upload speeds. Second parameter on FetchServers is search text.
 ```go
 package main
 
 import (
 	"fmt"
-	"github.com/showwin/speedtest-go/speedtest"
+	"github.com/dorofei/speedtest-go/speedtest"
 )
 
 func main() {
 	user, _ := speedtest.FetchUserInfo()
 
-	serverList, _ := speedtest.FetchServers(user)
+	serverList, _ := speedtest.FetchServers(user, "")
 	targets, _ := serverList.FindServer([]int{})
 
 	for _, s := range targets {

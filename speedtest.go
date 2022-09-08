@@ -36,7 +36,7 @@ func main() {
 		showUser(user)
 	}
 
-	servers, err := speedtest.FetchServers(user)
+	servers, err := speedtest.FetchServers(user, "")
 	checkError(err)
 	if *showList {
 		showServerList(servers)
